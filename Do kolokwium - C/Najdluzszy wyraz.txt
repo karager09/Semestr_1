@@ -1,0 +1,27 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+int main(void){
+  FILE * plik; int a;
+  char max[100]="a";
+  char bufor[100];
+  plik=fopen("polski.txt","r");
+  
+  if (plik==NULL){printf("Błąd w odczycie!");exit(1);}
+      while(!feof(plik)){
+      fscanf(plik,"%s",bufor);
+	   if(strlen(bufor)>strlen(max)){strcpy(max,bufor);}
+      }
+a=strlen(max);
+printf("Najdłuższy wyraz to : %s i posiada %d liter\n",max, a);
+printf("Inne wyrazy majace tyle liter:\n");
+
+plik=fopen("polski.txt","r");
+while(!feof(plik)){
+	fscanf(plik,"%s",bufor);
+	if(strlen(max)==strlen(bufor)) printf("%s \n",bufor);
+
+}
+
+  return 0;
+}

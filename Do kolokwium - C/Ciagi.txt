@@ -1,0 +1,90 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct ciag{
+    double * wyrazy;
+    int liczba_wyrazow;
+    struct ciag* nastepny;
+};
+struct najwiekszy{
+    double srednia;
+    struct ciag * najwiekszy_ciag;
+};
+
+struct najmniejszy{
+    double srednia;
+    struct ciag * najmniejszy_ciag;
+};
+
+struct ciag * wczytaj_ciag(struct ciag * poczatek,int n){
+    int i;
+    struct ciag * element;
+    if (n!=0){
+
+        element=(struct ciag *)malloc(sizeof(struct ciag));
+        element->liczba_wyrazow=n;
+        element->wyrazy=(double *)malloc(sizeof(double)*n);
+
+        for(i=0;i<n;++i){
+            printf("Podaj %d wyraz: ",i);
+            scanf("%lf",&element->wyrazy[i]);
+
+        }
+    element->nastepny=poczatek;
+    }
+    return element;
+
+};
+
+double policz_srednia(struct ciag * element){
+    int i;
+    double srednia=0;
+    for(i=0;i<element->liczba_wyrazow;++i) srednia=srednia+element->wyrazy[i];
+
+    return srednia/i;
+
+}
+
+void znajdz(struct ciag* pierwszy, struct najwiekszy *najw,struct najmniejszy *najm){
+    najw->najwiekszy_ciag=pierwszy;
+    najm->najmniejszy_ciag=pierwszy;
+    najw->srednia=policz_srednia(najw->najwiekszy_ciag);
+    najm->srednia=policz_srednia(najm->najmniejszy_ciag);
+    while(pierwszy!=NULL){
+        if(policz_srednia(pierwszy)>najw->srednia) {najw->najwiekszy_ciag=pierwszy; najw->srednia=policz_srednia(pierwszy);}
+        if(policz_srednia(pierwszy)<najm->srednia) {najm->najmniejszy_ciag=pierwszy; najm->srednia=policz_srednia(pierwszy);}
+
+
+
+        pierwszy=pierwszy->nastepny;
+
+    }
+
+
+
+}
+
+int main()
+{
+    struct najwiekszy najwiekszy;
+    struct najmniejszy najmniejszy;
+
+    struct ciag *pierwszy;
+    pierwszy=NULL;
+    int n;
+
+    do{
+        printf("Podaj liczbe elementow: ");
+        scanf("%d",&n);
+            if(n>0){
+                pierwszy=wczytaj_ciag(pierwszy,n);
+            }
+    }while(n>0);
+
+    znajdz(pierwszy,&najwiekszy,&najmniejszy);
+
+    printf("\nNajwieksza srednia z ciagow wynosi: %lf o dlugosci %d, a najmniejsza : %lf o dlugosci %d \n",najwiekszy.srednia,najwiekszy.najwiekszy_ciag->liczba_wyrazow,najmniejszy.srednia,najmniejszy.najmniejszy_ciag->liczba_wyrazow);
+
+
+    return 0;
+}

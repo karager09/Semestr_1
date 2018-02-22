@@ -1,0 +1,40 @@
+#include<stdio.h>
+
+int sprawdz(int s, char l){
+if(s<=9) {if(48<=l && l<48+s) return 1; else return 0;} else {if((48<=l && l<=57)||(65<=l && l<65+s-10)) return 1; else return 0;};
+}
+
+
+
+int main(void){
+int suma;
+int a;
+char t[20];
+int i=-1;
+int system;
+printf("Podaj system: ");
+scanf("%d",&system);
+printf("Podaj swoja liczbe w danym systemie(po każdej cyfrze(literze) nacisnij enter)): ");
+getchar();
+	do{
+	i++;
+	scanf("%c",&t[i]);
+	getchar();
+	}while(sprawdz(system,t[i]));
+
+
+
+
+if(t[0]<58)suma=t[0]-48;else suma=t[0]-55;
+for(a=1;a<=i-1;a++){
+/*printf("%c ",t[a]);
+printf("\n%d",suma);*/
+if(t[a]<58)suma=(suma)*system+t[a]-48;else suma=(suma)*system+t[a]-55;
+
+}
+printf("\nsuma=%d\n", suma);
+
+
+
+return 0;
+}

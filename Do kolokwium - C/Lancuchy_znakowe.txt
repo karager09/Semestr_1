@@ -1,0 +1,78 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include<string.h>
+
+struct alfabet{
+    char * pie;
+    char * ost;
+
+
+};
+
+char * podaj_wyraz(){
+    char bufor[50];
+    char * nowy_wyraz;
+    printf("Podaj wyraz: ");
+    scanf("%s",bufor);
+
+    nowy_wyraz=(char *)malloc(sizeof(char)*(strlen(bufor)+1));
+    strcpy(nowy_wyraz,bufor);
+
+
+    return nowy_wyraz;
+}
+
+void wyprowadz(char ** poczatek, int n){
+    int i;
+    for(i=0;i<n;++i){
+       printf("\n%s",poczatek[i]);
+
+    }
+}
+
+void wyprowadz_odwr(char ** poczatek, int n){
+    int i;
+    for(i=n-1;i>-1;--i){
+       printf("\n%s",poczatek[i]);
+
+    }
+}
+
+
+void alfabetycznie(char ** poczatek,int n,struct alfabet *alfabet){
+    int i;
+    alfabet->pie=poczatek[0];
+    alfabet->ost=poczatek[0];
+    for (i=0;i<n;++i){
+        if(strcmp(alfabet->pie,poczatek[i])>0){alfabet->pie=poczatek[i]; };
+        if(strcmp(alfabet->ost,poczatek[i])<0){alfabet->ost=poczatek[i]; };
+    }
+}
+
+
+int main()
+{
+    struct alfabet alfabet;
+    char ** poczatek;
+    int n,i;
+    printf("Podaj liczbe wyrazow: ");
+    scanf("%d",&n);
+    poczatek=(char **)malloc(sizeof(char *)*n);
+
+
+
+    for(i=0;i<n;++i){
+        poczatek[i]=podaj_wyraz();
+
+    }
+
+    wyprowadz_odwr(poczatek,n);
+
+    alfabetycznie(poczatek,n,&alfabet);
+
+    printf("\nPierwszy wyraz alfabetycznie: %s, ostani wyraz alfabetycznie: %s\n",alfabet.pie,alfabet.ost);
+
+
+
+    return 0;
+}

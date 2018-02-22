@@ -1,0 +1,88 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include<string.h>
+
+struct osoba{
+    char * nazwisko;
+    int rok_urodzenia;
+    int liczba_dzieci;
+    struct osoba * dziecko;
+    struct osoba * rodzenstwo;
+};
+
+struct pytanie{
+    struct osoba* najwiecej;
+    int czy_istnieje;
+
+};
+
+void wczytaj(struct osoba *rodz,int rok_ur){
+    struct osoba *dziecko;
+    dziecko=(struct osoba*)malloc(sizeof(struct osoba));
+    dziecko->rok_urodzenia=rok_ur;
+    dziecko->rodzenstwo=rodz->dziecko;
+    dziecko->nazwisko=rodz->nazwisko;
+    dziecko->liczba_dzieci=0;
+    dziecko->dziecko=NULL;
+    rodz->dziecko=dziecko;
+}
+
+void wyswietl(struct osoba *czlowiek){
+    if(czlowiek!=NULL){
+        printf("Naz: %s, rok urodzenia: %d, liczba dzieci: %d\n", czlowiek->nazwisko,czlowiek->rok_urodzenia,czlowiek->liczba_dzieci);
+       if (czlowiek->dziecko!=NULL){ wyswietl(czlowiek->dziecko);};
+       if (czlowiek->rodzenstwo!=NULL){ wyswietl(czlowiek->rodzenstwo);};
+    }
+};
+
+void wyswietl_wszystko(struct osoba * czlowiek,int n){
+    int i=0;
+    for(;i<n;++i) wyswietl(&czlowiek[i]);
+};
+
+void pytanko(struct pytanie * odpowiedz,struct osoba * rodzic,int n){
+    int i;
+    odpowiedz->czy_istnieje=0;
+    odpowiedz->najwiecej=&rodzic[0];
+    for(i=0;i<n;++i) {
+        if (rodzic[i].liczba_dzieci>odpowiedz->najwiecej->liczba_dzieci)odpowiedz->najwiecej=&rodzic[i];
+        if (rodzic[i].liczba_dzieci==0) odpowiedz->czy_istnieje=1;
+        }
+
+};
+
+void wczyt_dane(struct osoba * czlowiek){
+    int rok;
+    do {
+        printf("Podaj rok urodzenia dziecka %s: ",czlowiek->nazwisko);
+        scanf("%d",&rok);
+        if (rok) wczytaj(czlowiek,rok);
+
+
+    } while (rok);
+
+
+}
+
+
+int main()
+{
+    struct pytanie pytanie;
+    struct osoba rodzic[4]={{"karas",1996,5,NULL,NULL},{"giero",1996,3,NULL,NULL},{"zabik",1997,0,NULL,NULL},{"pazdan",1995,7,NULL,NULL}};
+    printf("Naz: %s\n",rodzic[0].nazwisko);
+   // wczytaj(&rodzic[0],2013);
+   // wczytaj(&rodzic[0],2014);
+   // wczytaj(&rodzic[0],2015);
+    //wyswietl(&rodzic[0]);
+
+    wczyt_dane(&rodzic[0]);
+
+    wyswietl_wszystko(&rodzic[0],4);
+
+    pytanko(&pytanie,&rodzic[0],4);
+
+    printf("Najwiecej dzieci ma: %s, %d dzieci\n", pytanie.najwiecej->nazwisko,pytanie.najwiecej->liczba_dzieci);
+    if (pytanie.czy_istnieje==0) printf("Nie istnieje osoba bezdzietna\n"); else printf("Istnieje osoba bezdzietna\n");
+
+    return 0;
+}

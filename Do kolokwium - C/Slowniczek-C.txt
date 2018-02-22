@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include<string.h>
+
+struct slowo{
+    char wyraz[50];
+    int liczba;
+    struct slowo* nastepne;
+};
+struct slowo * dodaj_slowo(struct slowo * poczatek,char nowy_wyraz[100]){
+    struct slowo *nowe;
+    nowe=(struct slowo*)malloc(sizeof(struct slowo));
+    strcpy(nowe->wyraz,nowy_wyraz);
+    nowe->nastepne=poczatek;
+    nowe->liczba=1;
+    printf("%s",nowy_wyraz);
+
+    return nowe;
+};
+
+void wyswietl(struct slowo* slowko){
+    while (slowko!=NULL){
+        printf("Slowo: %20s, ilosc wystapien: %d\n",slowko->wyraz,slowko->liczba);
+        slowko=slowko->nastepne;
+    }
+}
+
+int main()
+{
+    int licznik=0;
+    struct slowo * poczatek=NULL;
+    struct slowo *tmp=NULL;
+    char bufor[100];
+    FILE * plik;
+    plik=fopen("tekst1.txt","r");
+        if (plik==NULL){printf("Blad odczytu!"); exit(1);}
+    poczatek=dodaj_slowo(poczatek,bufor);
+
+    while (!feof(plik)){
+            ++licznik;
+        fscanf(plik,"%s",bufor);
+        tmp=poczatek;
+
+            while((strcmp(tmp->wyraz,bufor))){
+                tmp=tmp->nastepne;
+                if (tmp==NULL) break;
+            }
+
+        if (tmp==NULL) poczatek=dodaj_slowo(poczatek,bufor); else tmp->liczba++;
+
+    }
+
+    wyswietl(poczatek);
+    printf("Wszystkich wyrazow jest: %d",licznik);
+
+    fclose(plik);
+    return 0;
+}

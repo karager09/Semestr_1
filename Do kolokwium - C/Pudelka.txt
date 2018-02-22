@@ -1,0 +1,133 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct pudelko{
+    char nazwa[4];
+    double x,y,z;
+    struct pudelko * nastepne;
+};
+
+struct pudelko * podaj(struct pudelko* pierwsze){
+    struct pudelko* nowe;
+    nowe=(struct pudelko*)malloc(sizeof(struct pudelko));
+    nowe->nastepne=pierwsze;
+    printf("Podaj nazwe pudelka: ");
+    scanf("%s",nowe->nazwa);
+    printf("Podaj wsp x:");
+    scanf("%lf",&nowe->x);
+    printf("Podaj wsp y:");
+    scanf("%lf",&nowe->y);
+    printf("Podaj wsp z:");
+    scanf("%lf",&nowe->z);
+
+    return nowe;
+
+};
+
+
+struct pudelko * dawaj(struct pudelko * pierwsze){
+    char odpowiedz='y';
+
+    while(odpowiedz=='y'){
+        pierwsze=podaj(pierwsze);
+        printf("Czy chcesz dalej wprowadzac dane? y/n : ");
+        getchar();
+        scanf("%c",&odpowiedz);
+    };
+
+return pierwsze;
+
+};
+
+int policz_pudelka(struct pudelko * poczatek){
+    int i=0;
+    while(poczatek!=NULL){
+        ++i;
+        poczatek=poczatek->nastepne;
+    }
+return i;
+}
+
+struct pudelko *ktore(int i,struct pudelko *poczatek){
+    int j;
+    for(j=0;j<i;++j){
+        poczatek=poczatek->nastepne;
+    }
+    return poczatek;
+};
+
+char czy_mozna(struct pudelko *pierwsze,struct pudelko *drugie){
+    if((pierwsze->x>drugie->x)&&(pierwsze->y>drugie->y)&&(pierwsze->z>drugie->z)) return '>';
+    if((pierwsze->x<drugie->x)&&(pierwsze->y<drugie->y)&&(pierwsze->z<drugie->z)) return '<';
+    return '~';
+};
+
+  /*int * wyniki(int n, struct pudelko *poczatek){
+    int * wynik;
+    int i,j;
+    wynik=(int *)malloc(sizeof(int)*n*n);
+    for(i=0;i<n;++i){
+        for(j=0;j<n;++j){
+            *(wynik+n*i+j)=czy_mozna(ktore(i,poczatek),ktore(j,poczatek));
+        }
+    }
+return wynik;
+}   */
+
+
+char **wynik(int ile, struct pudelko * poczatek){
+    char **wynik=(char **)malloc(sizeof(char*)*(ile-1));
+    int i,j;
+    for(i=0;i<ile;++i){
+        wynik[i]=(int *)malloc(sizeof(int)*(ile-1-i));
+        for(j=0;j<ile-i-1;++j){
+            wynik[i][j]=czy_mozna(ktore(i,poczatek),ktore(j+i+1,poczatek));
+
+        }
+    }
+return wynik;
+}
+
+
+int main()
+{
+    int i,j,n;
+    struct pudelko * poczatek;
+    char **poczatek_wynikow;
+    poczatek=NULL;
+
+    poczatek=dawaj(poczatek);
+
+    printf("Jest %d pudelek.\n", policz_pudelka(poczatek));
+
+   /* poczatek_wynikow=wyniki(policz_pudelka(poczatek),poczatek);
+    n=policz_pudelka(poczatek);
+    for(i=0;i<n;++i){
+        for(j=0;j<n;++j){
+            printf("%3d",*(poczatek_wynikow+n*i+j));
+        }
+        printf("\n");
+
+
+    }      */
+
+    n=policz_pudelka(poczatek);
+
+    poczatek_wynikow=wynik(policz_pudelka(poczatek),poczatek);
+
+    for(i=0;i<n;++i){
+        for(j=0;j<n-i-1;++j){
+            printf("%3c",poczatek_wynikow[i][j]);
+
+        }
+        printf("\n");
+    };
+
+    //UWAGA!! NA WYNIK W POSTACI ZNACZKOW NALEZY PATRZEC "Z DRUGIEJ STRONY", NA GORZE JEST OSTATNI ELEMENT POROWNANY Z PRZEDOSTATNIM I TAK CORAZ WYRZEJ
+
+
+   // printf("\n%d",czy_mozna(ktore(0,poczatek),ktore(1,poczatek)));
+   // printf("Pudelko nr 2 nazywa sie %s", ktore(1,poczatek)->nazwa);
+
+    return 0;
+}

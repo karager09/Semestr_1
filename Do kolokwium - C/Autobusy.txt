@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include<string.h>
+
+struct osobowy{
+    char marka[20];
+    enum naped{benzyna,spalinowy}naped;
+    int cena;
+    int liczba_osi;
+
+    };
+
+    struct autobus{
+    char marka[20];
+    int liczba_osi;
+    int cena;
+    int liczba_pasazerow;
+    };
+
+void wyswietl(struct osobowy samochod){
+    printf("\nMarka: %s, naped %d, liczba osi: %d, cena %d",samochod.marka,samochod.naped,samochod.liczba_osi,samochod.cena);
+}
+
+void wyswietl_a(struct autobus samochod){
+    printf("\nMarka: %s, liczba osi: %d, cena %d, liczba pasazerow: %d",samochod.marka,samochod.liczba_osi,samochod.cena,samochod.liczba_pasazerow);
+}
+
+struct wechikul{
+    char typ[20];
+    char marka[20];
+    int cena;
+    int liczba_osi;
+
+    union {
+        enum naped naped;
+        int liczba_pasazerow;
+    }reszta;
+
+};
+
+int main()
+{
+    struct osobowy honda={"honda" , spalinowy , 5 , 30456};
+    struct osobowy samochod[10];
+    struct autobus bus;
+    bus.cena=111111;
+    bus.liczba_osi=6;
+    bus.liczba_pasazerow=56;
+    strcpy(bus.marka,"wolks");
+    wyswietl(honda);
+    wyswietl_a(bus);
+
+    struct wechikul costam;
+    costam.reszta.liczba_pasazerow=65;
+    printf("\n%d",costam.reszta.liczba_pasazerow);
+
+
+    return 0;
+}

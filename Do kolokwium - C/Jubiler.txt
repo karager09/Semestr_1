@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+
+void dane_diamentow(double ** poczatek, int *n){
+    int i;
+    printf("Podaj ile chcesz diamentow: ");
+    scanf("%d",n);
+    *poczatek=(double *)malloc(sizeof(double)*(*n));
+
+    for(i=0;i<(*n);++i){
+        printf("Podaj cene %d diementu: ", i);
+        scanf("%lf",&(*poczatek)[i]);
+    }
+};
+
+double ** suma(double *poczatek,int n){
+    int i,j;
+    double ** pierwszy;
+    pierwszy=(double **)malloc(sizeof(double *)*(n-1));
+
+    for(i=0;i<n-1;++i){
+        pierwszy[i]=(double *)malloc(sizeof(double)*(n-i));
+        for(j=0;j<n-i;++j){
+            pierwszy[i][j]=poczatek[i]+poczatek[j+i+1];
+        }
+    }
+return pierwszy;
+};
+
+void podaj_ktore(double **pierwszy){
+    int i,j;
+    printf("\nPodaj sume ktorych diamentow chcesz otrzymac: ");
+    scanf("%d",&i);
+    scanf("%d",&j);
+
+    printf("\n%lf",pierwszy[i][j-i-1]);
+};
+
+
+int main()
+{
+    double **pierwszy_wynik;
+    double * poczatek;
+    int n;
+    dane_diamentow(&poczatek,&n);
+    printf("Podales %d diamentow\n",n);
+
+    pierwszy_wynik=suma(poczatek,n);
+    printf("1+2=%lf",pierwszy_wynik[0][0]);
+
+    podaj_ktore(pierwszy_wynik);
+
+
+    return 0;
+}

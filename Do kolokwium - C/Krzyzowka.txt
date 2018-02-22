@@ -1,0 +1,41 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<time.h>
+
+int main(void){
+FILE * plik;
+int i=0,j;
+char bufor[100],pom[100],glowa[100],znak,bufor2[100];
+srand(time(0));
+
+plik=fopen("polski.txt","r");
+	if(plik==NULL){printf("Błąd!");exit(1);}
+
+fseek(plik,rand()%1021374,0);
+fscanf(plik,"%s",pom);
+fscanf(plik,"%s",glowa);printf("Glowna czesc: %s\n",glowa);
+while(i<strlen(glowa)){
+	fseek(plik,rand()%1021374,0);
+	fscanf(plik,"%s",pom);
+	fscanf(plik,"%s",bufor);
+	if(glowa[i]==bufor[0]){
+printf("%s\n",bufor);i++;
+j=0;
+while(j<strlen(bufor)){
+	fseek(plik,rand()%1021374,0);
+	fscanf(plik,"%s",pom);
+	fscanf(plik,"%s",bufor2);
+	if(bufor[j]==bufor2[0]){printf("%s,",bufor2);j++;}
+ }printf("\n");
+	}}
+/*i=0;
+plik=fopen("polski.txt","r");
+while(!feof(plik)){
+fscanf(plik,"%c",&znak);
+i++;
+}
+printf("ilosc znakow: %d\n", i);*/
+
+return 0;
+}

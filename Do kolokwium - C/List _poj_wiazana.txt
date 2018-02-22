@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+struct element{
+    char * nazwa;
+    struct element * nastepny;
+};
+
+struct element * dodaj_el(struct element * pierwszy,char * imie){
+    struct element *nowy;
+    nowy=(struct element *)malloc(sizeof(struct element));
+
+    nowy->nastepny=pierwszy;
+
+    nowy->nazwa=(char *)malloc(sizeof(char)*(strlen(imie)+1));
+    strcpy(nowy->nazwa,imie);
+
+    return nowy;
+};
+
+struct element * tworz_liste(struct element * pierwszy){
+    char odpowiedz[5];
+    char nazwa_dodanego[50];
+    do {
+    printf("Podaj nazwe nowego elementu:");
+    scanf("%s",nazwa_dodanego);
+    pierwszy=dodaj_el(pierwszy,nazwa_dodanego);
+
+
+
+    printf("Czy chcesz podac nastepny element? Jak tak no napisz \"tak\": ");
+    scanf("%s",odpowiedz);
+    } while(!strcmp(odpowiedz,"tak"));
+
+    return pierwszy;
+
+};
+
+void wyswietl(struct element * pierwszy){
+    do {
+        printf("Nastepny element: %s\n",pierwszy->nazwa);
+        pierwszy=pierwszy->nastepny;
+
+    } while(pierwszy!=NULL);
+
+};
+
+
+
+int main()
+{
+    struct element * poczatek;
+    poczatek=NULL;
+    poczatek=tworz_liste(poczatek);
+
+    wyswietl(poczatek);
+
+
+
+
+
+    return 0;
+}

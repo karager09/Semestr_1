@@ -1,0 +1,61 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+struct ksiazka{
+	char*imie;
+	char*nazwisko;
+	char*tytul;
+	int cena;
+	struct ksiazka *nastepna;};
+
+struct ksiazka * pobierz(struct ksiazka *pierwsza){
+	struct ksiazka *nowa;
+	nowa=(struct ksiazka*)malloc(sizeof(struct ksiazka));
+
+	char bufor[50];
+	printf("Podaj imie autora:");
+	scanf("%s",bufor);
+	nowa->imie=(char*)malloc(sizeof(bufor)+1);
+	strcpy(nowa->imie,bufor);
+
+	printf("Podaj nazwisko autora:");
+	scanf("%s",bufor);
+	nowa->nazwisko=(char*)malloc(sizeof(bufor)+1);
+	strcpy(nowa->nazwisko,bufor);
+
+	printf("Podaj tytul ksizki:");
+	scanf("%s",bufor);
+	nowa->tytul=(char*)malloc(sizeof(bufor)+1);
+	strcpy(nowa->tytul,bufor);
+
+	printf("Podaj cene ksiazki:");
+	scanf("%d",&nowa->cena);
+
+	nowa->nastepna=pierwsza;
+return nowa;
+	}
+
+void wyswietl(struct ksiazka *tmp){
+    while (tmp){
+        printf("Nazwisko: %s, imie: %s, cena: %d, tytul: %s\n",tmp->nazwisko,tmp->imie,tmp->cena,tmp->tytul);
+        tmp=tmp->nastepna;
+
+    }
+
+	}
+
+int main(void){
+	struct ksiazka *poczatek;
+	poczatek=NULL;
+
+
+	poczatek=pobierz(poczatek);
+	poczatek=pobierz(poczatek);
+	poczatek=pobierz(poczatek);
+	wyswietl(poczatek);
+
+
+
+return 0;
+}
